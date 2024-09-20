@@ -15,4 +15,9 @@ export default createTheme({
       main: arcOrange,
     },
   },
+  typography: {
+    h5: {
+      fontWeight: 300,
+    },
+  },
 });
