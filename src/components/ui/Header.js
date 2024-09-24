@@ -12,7 +12,7 @@ import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 
 import logo from "../../assets/logo.svg";
-import { purple } from "@mui/material/colors";
+
 function ElevationScroll(props) {
   const { children } = props;
   const trigger = useScrollTrigger({
@@ -62,12 +62,35 @@ function Header(Props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  React.useEffect(() => {
+    if (window.location.pathname === "/" && value !== 0) {
+      setValue(0);
+    } else if (window.location.pathname === "/services" && value !== 1) {
+      setValue(1);
+    } else if (window.location.pathname === "/theRevolution" && value !== 2) {
+      setValue(2);
+    } else if (window.location.pathname === "/aboutUs" && value !== 3) {
+      setValue(3);
+    } else if (window.location.pathname === "/contactUs" && value !== 4) {
+      setValue(4);
+    } else if (window.location.pathname === "/estimate" && value !== 5) {
+      setValue(5);
+    }
+  }, [value]);
   return (
     <>
       <ElevationScroll>
         <AppBar position="fixed" color="primary">
           <Toolbar disableGutters>
-            <Logo src={logo} alt="company logo" />
+            <Button
+              component={Link}
+              to="/"
+              style={{ padding: 0 }}
+              onClick={() => setValue(0)}
+              disableRipple
+            >
+              <Logo src={logo} alt="company logo" />
+            </Button>
             <StyledTabs
               value={value}
               onChange={handleChange}
