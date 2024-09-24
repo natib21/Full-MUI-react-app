@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 
+import { Link } from "react-router-dom";
+
 import logo from "../../assets/logo.svg";
 import { purple } from "@mui/material/colors";
 function ElevationScroll(props) {
@@ -71,11 +73,15 @@ function Header(Props) {
               onChange={handleChange}
               textColor="secondary"
             >
-              <StyleTab label="Home" />
-              <StyleTab label="Services" />
-              <StyleTab label="The Revolution" />
-              <StyleTab label="About Us" />
-              <StyleTab label="Contact Us" />
+              <StyleTab label="Home" component={Link} to="/" />
+              <StyleTab label="Services" component={Link} to="/services" />
+              <StyleTab
+                label="The Revolution"
+                component={Link}
+                to="/theRevolution"
+              />
+              <StyleTab label="About Us" component={Link} to="/aboutUs" />
+              <StyleTab label="Contact Us" component={Link} to="/contactUs" />
             </StyledTabs>
             <StyledButton variant="contained" color="secondary">
               Free Estimate
