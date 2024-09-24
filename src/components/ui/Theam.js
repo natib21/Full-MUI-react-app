@@ -1,6 +1,7 @@
 import { createTheme } from "@mui/material";
 
 const arcBlue = "#0B72B9";
+/* const arcBlue = "#000000"; */
 const arcOrange = "#ffba60";
 export default createTheme({
   palette: {
@@ -19,8 +20,14 @@ export default createTheme({
     tab: {
       fontFamily: "Raleway",
       textTransform: "none",
-      fontWeight: 700,
+      fontWeight: 100,
       fontSize: "1rem",
+    },
+    estimate: {
+      fontFamily: "Pacifico",
+      fontSize: "1rem",
+      textTransform: "none",
+      color: "white",
     },
   },
 });
