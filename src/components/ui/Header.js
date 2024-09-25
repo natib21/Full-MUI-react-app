@@ -11,7 +11,10 @@ import {
   MenuItem,
   useTheme,
   useMediaQuery,
+  SwipeableDrawer,
+  IconButton,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/system";
 
 import { Link } from "react-router-dom";
@@ -61,7 +64,7 @@ const StyleTab = styled(Tab)(({ theme, selected }) => ({
   minWidth: 10,
   marginLeft: "25px",
   "& .Mui-selected": {
-    color: "#FF5733", // Replace with your desired selected color
+    color: "#FF5733",
   },
 }));
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -86,29 +89,37 @@ const StyledButton = styled(Button)(({ theme }) => ({
   height: "45px",
 }));
 
+const StyledIconButton = styled(IconButton)(({ thems }) => ({
+  marginLeft: "auto",
+}));
+const StyledIcon = styled(MenuIcon)(({ theme }) => ({
+  height: "40px",
+  width: "40px",
+}));
 function Header(Props) {
   const [value, setValue] = React.useState(0);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("lg"));
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [openMenu, setOpenMenu] = React.useState(false);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
-    setOpen(true);
+    setOpenMenu(true);
   };
   const handleMenuItemClick = (e, i) => {
     setAnchorEl(null);
-    setOpen(false);
+    setOpenMenu(false);
     setSelectedIndex(i);
   };
   const handleClose = (e) => {
     setAnchorEl(null);
-    setOpen(false);
+    setOpenMenu(false);
   };
   const menuOptions = [
     {
@@ -200,7 +211,7 @@ function Header(Props) {
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
-        open={open}
+        open={openMenu}
         onClose={handleClose}
         MenuListProps={{ onMouseLeave: handleClose }}
         PaperProps={{
@@ -227,6 +238,23 @@ function Header(Props) {
       </Menu>
     </>
   );
+  const drawer = (
+    <>
+      <SwipeableDrawer
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        onOpen={() => setOpenDrawer(true)}
+      >
+        Example Drawer
+      </SwipeableDrawer>
+      <StyledIconButton
+        onClick={() => setOpenDrawer(!openDrawer)}
+        disableRipple
+      >
+        <StyledIcon />
+      </StyledIconButton>
+    </>
+  );
   return (
     <>
       <ElevationScroll>
@@ -241,7 +269,7 @@ function Header(Props) {
             >
               <Logo src={logo} alt="company logo" />
             </Button>
-            {matches ? null : tabs}
+            {matches ? drawer : tabs}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
