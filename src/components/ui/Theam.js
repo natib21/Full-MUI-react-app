@@ -15,13 +15,15 @@ export default createTheme({
     secondary: {
       main: arcOrange,
     },
+    normal: "#000000",
   },
   typography: {
     tab: {
       fontFamily: "Raleway",
       textTransform: "none",
-      fontWeight: 100,
+      fontWeight: 400,
       fontSize: "1rem",
+      opacity: 0.7,
     },
     estimate: {
       fontFamily: "Pacifico",

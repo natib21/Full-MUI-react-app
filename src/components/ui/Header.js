@@ -7,6 +7,7 @@ import {
   Tab,
   Button,
   Menu,
+  Paper,
   MenuItem,
 } from "@mui/material";
 import { styled } from "@mui/system";
@@ -41,15 +42,27 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
   marginLeft: "auto",
 }));
 const StyleTab = styled(Tab)(({ theme, selected }) => ({
-  ...theme.typography.Tab,
+  ...theme.typography.tab,
   color: "white",
   minWidth: 10,
   marginLeft: "25px",
-  /*   borderBottom: selected ? "2px solid white" : "none",
-  transition: "color 0.3s, border-bottom 0.3s", // Smooth transition for color and underline
-  "&:active": {
-    color: "white", // Change color on hover
-  }, */
+  "& .Mui-selected": {
+    color: "#FF5733", // Replace with your desired selected color
+  },
+}));
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.common.blue,
+  color: "white",
+  borderRadius: 0,
+  /* boxShadow: theme.shadows[5], */
+}));
+const StyledMenuItem = styled(MenuItem)(({ theme, selected }) => ({
+  ...theme.typography.tab,
+  opacity: 0.7,
+  "&:hover": {
+    opacity: 1,
+  },
+  color: selected ? "#ffba60" : "",
 }));
 const StyledButton = styled(Button)(({ theme }) => ({
   ...theme.typography.estimate,
@@ -63,6 +76,7 @@ function Header(Props) {
   const [value, setValue] = React.useState(0);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -71,29 +85,80 @@ function Header(Props) {
     setAnchorEl(e.currentTarget);
     setOpen(true);
   };
+  const handleMenuItemClick = (e, i) => {
+    setAnchorEl(null);
+    setOpen(false);
+    setSelectedIndex(i);
+  };
   const handleClose = (e) => {
     setAnchorEl(null);
     setOpen(false);
   };
+  const menuOptions = [
+    {
+      name: "Services",
+      link: "/services",
+    },
+    {
+      name: "Custom Software Development",
+      link: "/customSoftware",
+    },
+    { name: "Mobile App Development", link: "/mobileApp" },
+    { name: "Websites Development", link: "/websites" },
+  ];
   React.useEffect(() => {
-    if (window.location.pathname === "/" && value !== 0) {
-      setValue(0);
-    } else if (window.location.pathname === "/services" && value !== 1) {
-      setValue(1);
-    } else if (window.location.pathname === "/theRevolution" && value !== 2) {
-      setValue(2);
-    } else if (window.location.pathname === "/aboutUs" && value !== 3) {
-      setValue(3);
-    } else if (window.location.pathname === "/contactUs" && value !== 4) {
-      setValue(4);
-    } else if (window.location.pathname === "/estimate" && value !== 5) {
-      setValue(5);
-    } else if (window.location.pathname === "/customSoftware" && value !== 1) {
-      setValue(1);
-    } else if (window.location.pathname === "/mobileApp" && value !== 1) {
-      setValue(1);
-    } else if (window.location.pathname === "/websites" && value !== 1) {
-      setValue(1);
+    switch (window.location.pathname) {
+      case "/":
+        if (value !== 0) {
+          setValue(0);
+        }
+        break;
+      case "/services":
+        if (value !== 1) {
+          setValue(1);
+          setSelectedIndex(0);
+        }
+        break;
+      case "/theRevolution":
+        if (value !== 2) {
+          setValue(2);
+        }
+        break;
+      case "/aboutUs":
+        if (value !== 3) {
+          setValue(3);
+        }
+        break;
+      case "/contactUs":
+        if (value !== 4) {
+          setValue(4);
+        }
+        break;
+      case "/estimate":
+        if (value !== 5) {
+          setValue(5);
+        }
+        break;
+      case "/customSoftware":
+        if (value !== 1) {
+          setValue(1);
+          setSelectedIndex(1);
+        }
+        break;
+      case "/mobileApp":
+        if (value !== 1) {
+          setValue(1);
+          setSelectedIndex(2);
+        }
+        break;
+      case "/websites":
+        if (value !== 1) {
+          setValue(1);
+          setSelectedIndex(3);
+        }
+        break;
+      default:
+        break;
     }
   }, [value]);
   return (
@@ -141,47 +206,32 @@ function Header(Props) {
               open={open}
               onClose={handleClose}
               MenuListProps={{ onMouseLeave: handleClose }}
+              PaperProps={{
+                component: StyledPaper,
+              }}
+              elevation={0}
             >
-              <MenuItem
-                onClick={() => {
-                  handleClose();
-                  setValue(1);
-                }}
-                component={Link}
-                to="/services"
-              >
-                Services
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleClose();
-                  setValue(1);
-                }}
-                component={Link}
-                to="/customSoftware"
-              >
-                Custom Software Development
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleClose();
-                  setValue(1);
-                }}
-                component={Link}
-                to="/mobileApp"
-              >
-                Mobile App Development
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleClose();
-                  setValue(1);
-                }}
-                component={Link}
-                to="/websites"
-              >
-                Websites Development
-              </MenuItem>
+              {menuOptions.map((item, index) => (
+                <StyledMenuItem
+                  key={index}
+                  component={Link}
+                  to={item.link}
+                  onClick={(e) => {
+                    handleMenuItemClick(e, index);
+                    setValue(1);
+                    handleClose();
+                  }}
+                  selected={index === selectedIndex && value === 1}
+                >
+                  {item.name}
+                  {console.log(
+                    "selectedIndex:",
+                    selectedIndex,
+                    "value:",
+                    value
+                  )}
+                </StyledMenuItem>
+              ))}
             </Menu>
           </Toolbar>
         </AppBar>
