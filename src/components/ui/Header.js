@@ -6,6 +6,8 @@ import {
   Tabs,
   Tab,
   Button,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { styled } from "@mui/system";
 
@@ -59,8 +61,19 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 function Header(Props) {
   const [value, setValue] = React.useState(0);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+    setOpen(true);
+  };
+  const handleClose = (e) => {
+    setAnchorEl(null);
+    setOpen(false);
   };
   React.useEffect(() => {
     if (window.location.pathname === "/" && value !== 0) {
@@ -97,7 +110,14 @@ function Header(Props) {
               textColor="secondary"
             >
               <StyleTab label="Home" component={Link} to="/" />
-              <StyleTab label="Services" component={Link} to="/services" />
+              <StyleTab
+                label="Services"
+                component={Link}
+                to="/services"
+                aria-owns={anchorEl ? "simple-menu" : undefined}
+                aria-haspopup={anchorEl ? "true" : undefined}
+                onMouseOver={(e) => handleClick(e)}
+              />
               <StyleTab
                 label="The Revolution"
                 component={Link}
@@ -109,6 +129,19 @@ function Header(Props) {
             <StyledButton variant="contained" color="secondary">
               Free Estimate
             </StyledButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{ onMouseLeave: handleClose }}
+            >
+              <MenuItem onClick={handleClose}>
+                Custom Software Development
+              </MenuItem>
+              <MenuItem onClick={handleClose}>Mobile App Development</MenuItem>
+              <MenuItem onClick={handleClose}>Websites Development</MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
       </ElevationScroll>

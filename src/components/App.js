@@ -16,9 +16,12 @@ const App = () => {
             <Route element={<AppLayout />}>
               <Route index element={<AppLayout />} />
               <Route path="services" element={<Services />} />
-              {/*  <Route path="/customSoftware" element={<Services />} />
-              <Route path="/mobileApp" element={<MobileApp />} />
-              <Route path="/websites" element={<Websites />} /> */}
+              <Route
+                path="/customSoftware"
+                element={<div>Custome Software</div>}
+              />
+              <Route path="/mobileApp" element={<div>Mobile App</div>} />
+              <Route path="/websites" element={<div>Websites</div>} />
               <Route path="theRevolution" element={<TheRevolution />} />
               <Route path="aboutUs" element={<AboutUs />} />
               <Route path="contactUs" element={<ContactUs />} />
