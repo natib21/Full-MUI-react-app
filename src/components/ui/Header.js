@@ -16,6 +16,7 @@ import {
   List,
   ListItemText,
   ListItemButton,
+  ListItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/system";
@@ -98,6 +99,15 @@ const StyledIconButton = styled(IconButton)(({ thems }) => ({
 const StyledIcon = styled(MenuIcon)(({ theme }) => ({
   height: "40px",
   width: "40px",
+}));
+const StyleSwipeableDrawer = styled(SwipeableDrawer)(({ theme }) => ({
+  "& .MuiDrawer-paper": {
+    backgroundColor: theme.palette.common.blue, // Replace 'yourColor' with the desired color
+  },
+}));
+const StyledListItemText = styled(ListItemText)(({ theme }) => ({
+  ...theme.typography.tab,
+  color: "white",
 }));
 function Header(Props) {
   const [value, setValue] = React.useState(0);
@@ -243,7 +253,7 @@ function Header(Props) {
   );
   const drawer = (
     <>
-      <SwipeableDrawer
+      <StyleSwipeableDrawer
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         onOpen={() => setOpenDrawer(true)}
@@ -255,7 +265,7 @@ function Header(Props) {
             component={Link}
             to="/"
           >
-            <ListItemText disableTypography>Home</ListItemText>
+            <StyledListItemText disableTypography>Home</StyledListItemText>
           </ListItemButton>
           <ListItemButton
             onClick={() => setOpenDrawer(false)}
@@ -263,7 +273,7 @@ function Header(Props) {
             component={Link}
             to="/services"
           >
-            <ListItemText disableTypography>Services</ListItemText>
+            <StyledListItemText disableTypography>Services</StyledListItemText>
           </ListItemButton>
           <ListItemButton
             onClick={() => setOpenDrawer(false)}
@@ -271,7 +281,9 @@ function Header(Props) {
             component={Link}
             to="/theRevolution"
           >
-            <ListItemText disableTypography>The Revolution</ListItemText>
+            <StyledListItemText disableTypography>
+              The Revolution
+            </StyledListItemText>
           </ListItemButton>
           <ListItemButton
             onClick={() => setOpenDrawer(false)}
@@ -279,7 +291,7 @@ function Header(Props) {
             component={Link}
             to="/aboutUs"
           >
-            <ListItemText disableTypography>About Us</ListItemText>
+            <StyledListItemText disableTypography>About Us</StyledListItemText>
           </ListItemButton>
           <ListItemButton
             onClick={() => setOpenDrawer(false)}
@@ -287,18 +299,29 @@ function Header(Props) {
             component={Link}
             to="/contactUs"
           >
-            <ListItemText disableTypography>Contact Us</ListItemText>
+            <StyledListItemText disableTypography>
+              Contact Us
+            </StyledListItemText>
           </ListItemButton>
           <ListItemButton
             onClick={() => setOpenDrawer(false)}
             divider
             component={Link}
             to="/estimate"
+            sx={{
+              backgroundColor: "orange", // Custom background color
+              color: "black", // Custom text color
+              "&:hover": {
+                backgroundColor: "darkorange", // Change on hover
+              },
+            }}
           >
-            <ListItemText disableTypography>Free Estimate</ListItemText>
+            <StyledListItemText disableTypography>
+              Free Estimate
+            </StyledListItemText>
           </ListItemButton>
         </List>
-      </SwipeableDrawer>
+      </StyleSwipeableDrawer>
       <StyledIconButton
         onClick={() => setOpenDrawer(!openDrawer)}
         disableRipple
