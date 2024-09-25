@@ -9,6 +9,8 @@ import {
   Menu,
   Paper,
   MenuItem,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { styled } from "@mui/system";
 
@@ -31,12 +33,24 @@ function ElevationScroll(props) {
 }
 const ToolbarMargin = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
-  marginBottom: "2em",
+  marginBottom: "3em",
+  [theme.breakpoints.down("md")]: {
+    marginBottom: "2em",
+  },
+  [theme.breakpoints.down("xs")]: {
+    height: "1.25em",
+  },
 }));
 const Logo = styled("img")(({ theme }) => ({
   height: "5em",
   width: "auto",
   cursor: "pointer",
+  [theme.breakpoints.down("md")]: {
+    height: "4.5em",
+  },
+  [theme.breakpoints.down("xs")]: {
+    height: "3em",
+  },
 }));
 const StyledTabs = styled(Tabs)(({ theme }) => ({
   marginLeft: "auto",
@@ -77,6 +91,8 @@ function Header(Props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("lg"));
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -161,6 +177,56 @@ function Header(Props) {
         break;
     }
   }, [value]);
+
+  const tabs = (
+    <>
+      <StyledTabs value={value} onChange={handleChange} textColor="secondary">
+        <StyleTab label="Home" component={Link} to="/" />
+        <StyleTab
+          label="Services"
+          component={Link}
+          to="/services"
+          aria-owns={anchorEl ? "simple-menu" : undefined}
+          aria-haspopup={anchorEl ? "true" : undefined}
+          onMouseOver={(e) => handleClick(e)}
+        />
+        <StyleTab label="The Revolution" component={Link} to="/theRevolution" />
+        <StyleTab label="About Us" component={Link} to="/aboutUs" />
+        <StyleTab label="Contact Us" component={Link} to="/contactUs" />
+      </StyledTabs>
+      <StyledButton variant="contained" color="secondary">
+        Free Estimate
+      </StyledButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{ onMouseLeave: handleClose }}
+        PaperProps={{
+          component: StyledPaper,
+        }}
+        elevation={0}
+      >
+        {menuOptions.map((item, index) => (
+          <StyledMenuItem
+            key={index}
+            component={Link}
+            to={item.link}
+            onClick={(e) => {
+              handleMenuItemClick(e, index);
+              setValue(1);
+              handleClose();
+            }}
+            selected={index === selectedIndex && value === 1}
+          >
+            {item.name}
+            {console.log("selectedIndex:", selectedIndex, "value:", value)}
+          </StyledMenuItem>
+        ))}
+      </Menu>
+    </>
+  );
   return (
     <>
       <ElevationScroll>
@@ -175,64 +241,7 @@ function Header(Props) {
             >
               <Logo src={logo} alt="company logo" />
             </Button>
-            <StyledTabs
-              value={value}
-              onChange={handleChange}
-              textColor="secondary"
-            >
-              <StyleTab label="Home" component={Link} to="/" />
-              <StyleTab
-                label="Services"
-                component={Link}
-                to="/services"
-                aria-owns={anchorEl ? "simple-menu" : undefined}
-                aria-haspopup={anchorEl ? "true" : undefined}
-                onMouseOver={(e) => handleClick(e)}
-              />
-              <StyleTab
-                label="The Revolution"
-                component={Link}
-                to="/theRevolution"
-              />
-              <StyleTab label="About Us" component={Link} to="/aboutUs" />
-              <StyleTab label="Contact Us" component={Link} to="/contactUs" />
-            </StyledTabs>
-            <StyledButton variant="contained" color="secondary">
-              Free Estimate
-            </StyledButton>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{ onMouseLeave: handleClose }}
-              PaperProps={{
-                component: StyledPaper,
-              }}
-              elevation={0}
-            >
-              {menuOptions.map((item, index) => (
-                <StyledMenuItem
-                  key={index}
-                  component={Link}
-                  to={item.link}
-                  onClick={(e) => {
-                    handleMenuItemClick(e, index);
-                    setValue(1);
-                    handleClose();
-                  }}
-                  selected={index === selectedIndex && value === 1}
-                >
-                  {item.name}
-                  {console.log(
-                    "selectedIndex:",
-                    selectedIndex,
-                    "value:",
-                    value
-                  )}
-                </StyledMenuItem>
-              ))}
-            </Menu>
+            {matches ? null : tabs}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
