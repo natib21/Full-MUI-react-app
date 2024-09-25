@@ -88,6 +88,12 @@ function Header(Props) {
       setValue(4);
     } else if (window.location.pathname === "/estimate" && value !== 5) {
       setValue(5);
+    } else if (window.location.pathname === "/customSoftware" && value !== 1) {
+      setValue(1);
+    } else if (window.location.pathname === "/mobileApp" && value !== 1) {
+      setValue(1);
+    } else if (window.location.pathname === "/websites" && value !== 1) {
+      setValue(1);
     }
   }, [value]);
   return (
@@ -136,11 +142,46 @@ function Header(Props) {
               onClose={handleClose}
               MenuListProps={{ onMouseLeave: handleClose }}
             >
-              <MenuItem onClick={handleClose}>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  setValue(1);
+                }}
+                component={Link}
+                to="/services"
+              >
+                Services
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  setValue(1);
+                }}
+                component={Link}
+                to="/customSoftware"
+              >
                 Custom Software Development
               </MenuItem>
-              <MenuItem onClick={handleClose}>Mobile App Development</MenuItem>
-              <MenuItem onClick={handleClose}>Websites Development</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  setValue(1);
+                }}
+                component={Link}
+                to="/mobileApp"
+              >
+                Mobile App Development
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  setValue(1);
+                }}
+                component={Link}
+                to="/websites"
+              >
+                Websites Development
+              </MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
