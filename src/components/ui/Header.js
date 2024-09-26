@@ -238,7 +238,6 @@ function Header(Props) {
             selected={index === selectedIndex && value === 1}
           >
             {item.name}
-            {console.log("selectedIndex:", selectedIndex, "value:", value)}
           </StyledMenuItem>
         ))}
       </Menu>
@@ -254,11 +253,10 @@ function Header(Props) {
           "& .MuiDrawer-paper": {
             width: 250,
             position: "absolute",
-            top: 10,
-            left: 10,
           },
         }}
       >
+        <ToolbarMargin />
         <List disablePadding>
           {routes.map((route, index) => (
             <ListItemButton
@@ -315,7 +313,11 @@ function Header(Props) {
   return (
     <>
       <ElevationScroll>
-        <AppBar position="fixed" color="primary">
+        <AppBar
+          position="fixed"
+          color="primary"
+          sx={{ zIndex: theme.zIndex.modal + 1 }}
+        >
           <Toolbar disableGutters>
             <Button
               component={Link}
