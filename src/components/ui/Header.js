@@ -160,7 +160,14 @@ function Header(Props) {
   ];
   const routes = [
     { name: "Home", link: "/", activeIndex: 0 },
-    { name: "Services", link: "/services", activeIndex: 1 },
+    {
+      name: "Services",
+      link: "/services",
+      activeIndex: 1,
+      ariaOwns: anchorEl ? "simple-menu" : undefined,
+      ariaHasPopUp: anchorEl ? "true" : undefined,
+      mouseOver: (e) => handleClick(e),
+    },
     { name: "The Revolution", link: "/theRevolution", activeIndex: 2 },
     { name: "About Us", link: "/aboutUs", activeIndex: 3 },
     { name: "Contact Us", link: "/contactUs", activeIndex: 4 },
@@ -180,77 +187,29 @@ function Header(Props) {
           break;
       }
     });
-
-    /*     switch (window.location.pathname) {
-      case "/":
-        if (value !== 0) {
-          setValue(0);
-        }
-        break;
-      case "/services":
-        if (value !== 1) {
-          setValue(1);
-          setSelectedIndex(0);
-        }
-        break;
-      case "/theRevolution":
-        if (value !== 2) {
-          setValue(2);
-        }
-        break;
-      case "/aboutUs":
-        if (value !== 3) {
-          setValue(3);
-        }
-        break;
-      case "/contactUs":
-        if (value !== 4) {
-          setValue(4);
-        }
-        break;
-      case "/estimate":
-        if (value !== 5) {
-          setValue(5);
-        }
-        break;
-      case "/customSoftware":
-        if (value !== 1) {
-          setValue(1);
-          setSelectedIndex(1);
-        }
-        break;
-      case "/mobileApp":
-        if (value !== 1) {
-          setValue(1);
-          setSelectedIndex(2);
-        }
-        break;
-      case "/websites":
-        if (value !== 1) {
-          setValue(1);
-          setSelectedIndex(3);
-        }
-        break;
-      default:
-        break;
-    } */
   }, [value, menuOptions, selectedIndex, routes]);
 
+  const style = {
+    backgroundColor: "orange", // Custom background color
+    color: "black", // Custom text color
+    "&:hover": {
+      backgroundColor: "darkorange", // Change on hover
+    },
+  };
   const tabs = (
     <>
       <StyledTabs value={value} onChange={handleChange} textColor="secondary">
-        <StyleTab label="Home" component={Link} to="/" />
-        <StyleTab
-          label="Services"
-          component={Link}
-          to="/services"
-          aria-owns={anchorEl ? "simple-menu" : undefined}
-          aria-haspopup={anchorEl ? "true" : undefined}
-          onMouseOver={(e) => handleClick(e)}
-        />
-        <StyleTab label="The Revolution" component={Link} to="/theRevolution" />
-        <StyleTab label="About Us" component={Link} to="/aboutUs" />
-        <StyleTab label="Contact Us" component={Link} to="/contactUs" />
+        {routes.map((route, index) => (
+          <StyleTab
+            key={index}
+            component={Link}
+            to={route.link}
+            label={route.name}
+            aria-owns={route.ariaOwns}
+            aria-haspopup={route.ariaHasPopUp}
+            onMouseOver={route.mouseOver}
+          />
+        ))}
       </StyledTabs>
       <StyledButton variant="contained" color="secondary">
         Free Estimate
@@ -301,76 +260,27 @@ function Header(Props) {
         }}
       >
         <List disablePadding>
-          <ListItemButton
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(0);
-            }}
-            divider
-            component={Link}
-            to="/"
-            selected={value === 0}
-          >
-            <StyledListItemText selected={value === 0} disableTypography>
-              Home
-            </StyledListItemText>
-          </ListItemButton>
-          <ListItemButton
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(1);
-            }}
-            divider
-            component={Link}
-            to="/services"
-            selected={value === 1}
-          >
-            <StyledListItemText selected={value === 1} disableTypography>
-              Services
-            </StyledListItemText>
-          </ListItemButton>
-          <ListItemButton
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(2);
-            }}
-            divider
-            component={Link}
-            to="/theRevolution"
-            selected={value === 2}
-          >
-            <StyledListItemText selected={value === 2} disableTypography>
-              The Revolution
-            </StyledListItemText>
-          </ListItemButton>
-          <ListItemButton
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(3);
-            }}
-            divider
-            component={Link}
-            to="/aboutUs"
-            selected={value === 3}
-          >
-            <StyledListItemText selected={value === 3} disableTypography>
-              About Us
-            </StyledListItemText>
-          </ListItemButton>
-          <ListItemButton
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(4);
-            }}
-            divider
-            component={Link}
-            to="/contactUs"
-            selected={value === 4}
-          >
-            <StyledListItemText selected={value === 4} disableTypography>
-              Contact Us
-            </StyledListItemText>
-          </ListItemButton>
+          {routes.map((route, index) => (
+            <ListItemButton
+              key={index}
+              onClick={() => {
+                setOpenDrawer(false);
+                setValue(route.activeIndex);
+              }}
+              divider
+              component={Link}
+              to={route.link}
+            >
+              <StyledListItemText
+                disableTypography
+                selected={value === route.activeIndex}
+                sx={route.name === "estimate" ? { style } : ""}
+              >
+                {route.name}
+              </StyledListItemText>
+            </ListItemButton>
+          ))}
+
           <ListItemButton
             onClick={() => {
               setOpenDrawer(false);
