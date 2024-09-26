@@ -16,7 +16,6 @@ import {
   List,
   ListItemText,
   ListItemButton,
-  ListItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/system";
@@ -105,10 +104,14 @@ const StyleSwipeableDrawer = styled(SwipeableDrawer)(({ theme }) => ({
     backgroundColor: theme.palette.common.blue, // Replace 'yourColor' with the desired color
   },
 }));
-const StyledListItemText = styled(ListItemText)(({ theme }) => ({
+const StyledListItemText = styled(ListItemText)(({ theme, selected }) => ({
   ...theme.typography.tab,
   color: "white",
+  opacity: selected ? 1 : 0.7,
 }));
+/* const StyledListItemBtn = styled(ListItemButton)(({ theme, selected }) => ({
+  color: selected ? theme.palette.common.blue : "white",
+})); */
 function Header(Props) {
   const [value, setValue] = React.useState(0);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -135,19 +138,50 @@ function Header(Props) {
     setOpenMenu(false);
   };
   const menuOptions = [
-    {
-      name: "Services",
-      link: "/services",
-    },
+    { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
     {
       name: "Custom Software Development",
       link: "/customSoftware",
+      activeIndex: 1,
+      selectedIndex: 1,
     },
-    { name: "Mobile App Development", link: "/mobileApp" },
-    { name: "Websites Development", link: "/websites" },
+    {
+      name: "Mobile App Development",
+      link: "/mobileApp",
+      activeIndex: 1,
+      selectedIndex: 2,
+    },
+    {
+      name: "Websites Development",
+      link: "/websites",
+      activeIndex: 1,
+      selectedIndex: 3,
+    },
+  ];
+  const routes = [
+    { name: "Home", link: "/", activeIndex: 0 },
+    { name: "Services", link: "/services", activeIndex: 1 },
+    { name: "The Revolution", link: "/theRevolution", activeIndex: 2 },
+    { name: "About Us", link: "/aboutUs", activeIndex: 3 },
+    { name: "Contact Us", link: "/contactUs", activeIndex: 4 },
   ];
   React.useEffect(() => {
-    switch (window.location.pathname) {
+    [...menuOptions, ...routes].forEach((route) => {
+      switch (window.location.pathname) {
+        case `${route.link}`:
+          if (value !== route.activeIndex) {
+            setValue(route.activeIndex);
+            if (route.selectedIndex && route.selectedIndex !== selectedIndex) {
+              setSelectedIndex(route.selectedIndex);
+            }
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
+    /*     switch (window.location.pathname) {
       case "/":
         if (value !== 0) {
           setValue(0);
@@ -199,8 +233,8 @@ function Header(Props) {
         break;
       default:
         break;
-    }
-  }, [value]);
+    } */
+  }, [value, menuOptions, selectedIndex, routes]);
 
   const tabs = (
     <>
@@ -257,57 +291,95 @@ function Header(Props) {
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         onOpen={() => setOpenDrawer(true)}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 250,
+            position: "absolute",
+            top: 10,
+            left: 10,
+          },
+        }}
       >
         <List disablePadding>
           <ListItemButton
-            onClick={() => setOpenDrawer(false)}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(0);
+            }}
             divider
             component={Link}
             to="/"
+            selected={value === 0}
           >
-            <StyledListItemText disableTypography>Home</StyledListItemText>
+            <StyledListItemText selected={value === 0} disableTypography>
+              Home
+            </StyledListItemText>
           </ListItemButton>
           <ListItemButton
-            onClick={() => setOpenDrawer(false)}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(1);
+            }}
             divider
             component={Link}
             to="/services"
+            selected={value === 1}
           >
-            <StyledListItemText disableTypography>Services</StyledListItemText>
+            <StyledListItemText selected={value === 1} disableTypography>
+              Services
+            </StyledListItemText>
           </ListItemButton>
           <ListItemButton
-            onClick={() => setOpenDrawer(false)}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(2);
+            }}
             divider
             component={Link}
             to="/theRevolution"
+            selected={value === 2}
           >
-            <StyledListItemText disableTypography>
+            <StyledListItemText selected={value === 2} disableTypography>
               The Revolution
             </StyledListItemText>
           </ListItemButton>
           <ListItemButton
-            onClick={() => setOpenDrawer(false)}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(3);
+            }}
             divider
             component={Link}
             to="/aboutUs"
+            selected={value === 3}
           >
-            <StyledListItemText disableTypography>About Us</StyledListItemText>
+            <StyledListItemText selected={value === 3} disableTypography>
+              About Us
+            </StyledListItemText>
           </ListItemButton>
           <ListItemButton
-            onClick={() => setOpenDrawer(false)}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(4);
+            }}
             divider
             component={Link}
             to="/contactUs"
+            selected={value === 4}
           >
-            <StyledListItemText disableTypography>
+            <StyledListItemText selected={value === 4} disableTypography>
               Contact Us
             </StyledListItemText>
           </ListItemButton>
           <ListItemButton
-            onClick={() => setOpenDrawer(false)}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(5);
+            }}
             divider
             component={Link}
             to="/estimate"
+            selected={value === 5}
             sx={{
               backgroundColor: "orange", // Custom background color
               color: "black", // Custom text color
@@ -316,7 +388,7 @@ function Header(Props) {
               },
             }}
           >
-            <StyledListItemText disableTypography>
+            <StyledListItemText selected={value === 5} disableTypography>
               Free Estimate
             </StyledListItemText>
           </ListItemButton>
