@@ -109,9 +109,7 @@ const StyledListItemText = styled(ListItemText)(({ theme, selected }) => ({
   color: "white",
   opacity: selected ? 1 : 0.7,
 }));
-/* const StyledListItemBtn = styled(ListItemButton)(({ theme, selected }) => ({
-  color: selected ? theme.palette.common.blue : "white",
-})); */
+
 function Header(Props) {
   const [value, setValue] = React.useState(0);
   const [anchorEl, setAnchorEl] = React.useState(null);

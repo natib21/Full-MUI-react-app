@@ -6,6 +6,7 @@ import ContactUs from "../pages/ContactUs";
 import Estimate from "../pages/Estimate";
 import TheRevolution from "../pages/TheRevolution";
 import AppLayout from "./ui/AppLayout";
+import Footer from "./ui/Footer";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
               <Route path="estimate" element={<Estimate />} />
             </Route>
           </Routes>
+          <Footer />
         </BrowserRouter>
       </ThemeProvider>
     </div>
