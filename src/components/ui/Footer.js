@@ -1,5 +1,6 @@
 import { styled } from "@mui/system";
 import Grid from "@mui/material/Grid";
+import { Link } from "react-router-dom";
 import footerAdornment from "../../assets/Footer Adornment.svg";
 const StyledFooter = styled("footer")(({ theme }) => ({
   backgroundColor: theme.palette.common.blue,
@@ -17,53 +18,83 @@ const StyledImage = styled("img")(({ theme }) => ({
     width: "10em",
   },
 }));
-const StyledGrid = styled(Grid)(({ theme }) => ({
+const StyledGridMain = styled(Grid)(({ theme }) => ({
   position: "absolute",
+}));
+const StyledGridMainItem = styled(Grid)(({ theme }) => ({
+  margin: "3em",
 }));
 const StyledGridItems = styled(Grid)(({ theme }) => ({
   color: "white",
   fontFamily: "Arial",
   fontSize: "0.75rem",
   fontWeight: "bold",
+  textDecoration: "none",
 }));
 const Footer = () => {
   return (
     <StyledFooter>
-      <StyledGrid container justifyContent="center">
-        <Grid item>
-          <Grid container direction="column">
-            <StyledGridItems item> Home</StyledGridItems>
+      <StyledGridMain container justifyContent="center">
+        <StyledGridMainItem item>
+          <Grid container direction="column" spacing={2}>
+            <StyledGridItems item component={Link} to="/">
+              Home
+            </StyledGridItems>
           </Grid>
-        </Grid>
-        <Grid item>
-          <Grid container direction="column">
-            <StyledGridItems item>Services</StyledGridItems>
-            <StyledGridItems item>Custom Software Development</StyledGridItems>
-            <StyledGridItems item>Mobile App Development</StyledGridItems>
-            <StyledGridItems item>Websites Development</StyledGridItems>
+        </StyledGridMainItem>
+        <StyledGridMainItem item>
+          <Grid container direction="column" spacing={2}>
+            <StyledGridItems item component={Link} to="/services">
+              Services
+            </StyledGridItems>
+            <StyledGridItems item component={Link} to="/customSoftware">
+              Custom Software Development
+            </StyledGridItems>
+            <StyledGridItems item component={Link} to="/mobileApp">
+              Mobile App Development
+            </StyledGridItems>
+            <StyledGridItems item component={Link} to="/websites">
+              Websites Development
+            </StyledGridItems>
           </Grid>
-        </Grid>
-        <Grid item>
-          <Grid container direction="column">
-            <StyledGridItems item> The Revolution</StyledGridItems>
-            <StyledGridItems item>Vision</StyledGridItems>
-            <StyledGridItems item>Technology</StyledGridItems>
-            <StyledGridItems item>Process</StyledGridItems>
+        </StyledGridMainItem>
+        <StyledGridMainItem item>
+          <Grid container direction="column" spacing={2}>
+            <StyledGridItems item component={Link} to="/theRevolution">
+              The Revolution
+            </StyledGridItems>
+            <StyledGridItems item component={Link} to="/vision">
+              Vision
+            </StyledGridItems>
+            <StyledGridItems item component={Link} to="/technology">
+              Technology
+            </StyledGridItems>
+            <StyledGridItems item component={Link} to="/process">
+              Process
+            </StyledGridItems>
           </Grid>
-        </Grid>
-        <Grid item>
-          <Grid container direction="column">
-            <StyledGridItems item> About Us</StyledGridItems>
-            <StyledGridItems item> Hisotry</StyledGridItems>
-            <StyledGridItems item> Team</StyledGridItems>
+        </StyledGridMainItem>
+        <StyledGridMainItem item>
+          <Grid container direction="column" spacing={2}>
+            <StyledGridItems item component={Link} to="/aboutUs">
+              About Us
+            </StyledGridItems>
+            <StyledGridItems item component={Link} to="/history">
+              Hisotry
+            </StyledGridItems>
+            <StyledGridItems item component={Link} to="/team">
+              Team
+            </StyledGridItems>
           </Grid>
-        </Grid>
-        <Grid item>
-          <Grid container direction="column">
-            <StyledGridItems item> Contact Us</StyledGridItems>
+        </StyledGridMainItem>
+        <StyledGridMainItem item>
+          <Grid container direction="column" spacing={2}>
+            <StyledGridItems item component={Link} to="/contactUs">
+              Contact Us
+            </StyledGridItems>
           </Grid>
-        </Grid>
-      </StyledGrid>
+        </StyledGridMainItem>
+      </StyledGridMain>
       <StyledImage alt="black decorative" src={footerAdornment} />
     </StyledFooter>
   );
