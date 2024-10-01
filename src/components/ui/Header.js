@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useMemo } from "react";
 import {
   Toolbar,
   AppBar,
@@ -110,14 +111,13 @@ const StyledListItemText = styled(ListItemText)(({ theme, selected }) => ({
   opacity: selected ? 1 : 0.7,
 }));
 
-function Header(Props) {
-  const [value, setValue] = React.useState(0);
+function Header({ value, setValue, selectedIndex, setSelectedIndex }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("lg"));
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openMenu, setOpenMenu] = React.useState(false);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -135,47 +135,56 @@ function Header(Props) {
     setAnchorEl(null);
     setOpenMenu(false);
   };
-  const menuOptions = [
-    { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
-    {
-      name: "Custom Software Development",
-      link: "/customSoftware",
-      activeIndex: 1,
-      selectedIndex: 1,
-    },
-    {
-      name: "Mobile App Development",
-      link: "/mobileApp",
-      activeIndex: 1,
-      selectedIndex: 2,
-    },
-    {
-      name: "Websites Development",
-      link: "/websites",
-      activeIndex: 1,
-      selectedIndex: 3,
-    },
-  ];
-  const routes = [
-    { name: "Home", link: "/", activeIndex: 0 },
-    {
-      name: "Services",
-      link: "/services",
-      activeIndex: 1,
-      ariaOwns: anchorEl ? "simple-menu" : undefined,
-      ariaHasPopUp: anchorEl ? "true" : undefined,
-      mouseOver: (e) => handleClick(e),
-    },
-    { name: "The Revolution", link: "/theRevolution", activeIndex: 2 },
-    { name: "About Us", link: "/aboutUs", activeIndex: 3 },
-    { name: "Contact Us", link: "/contactUs", activeIndex: 4 },
-  ];
+  const menuOptions = useMemo(
+    () => [
+      { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
+      {
+        name: "Custom Software Development",
+        link: "/customSoftware",
+        activeIndex: 1,
+        selectedIndex: 1,
+      },
+      {
+        name: "Mobile App Development",
+        link: "/mobileApp",
+        activeIndex: 1,
+        selectedIndex: 2,
+      },
+      {
+        name: "Websites Development",
+        link: "/websites",
+        activeIndex: 1,
+        selectedIndex: 3,
+      },
+    ],
+    []
+  );
+
+  // Wrap routes in useMemo
+  const routes = useMemo(
+    () => [
+      { name: "Home", link: "/", activeIndex: 0 },
+      {
+        name: "Services",
+        link: "/services",
+        activeIndex: 1,
+        ariaOwns: anchorEl ? "simple-menu" : undefined,
+        ariaHasPopUp: anchorEl ? "true" : undefined,
+        mouseOver: (e) => handleClick(e),
+      },
+      { name: "The Revolution", link: "/theRevolution", activeIndex: 2 },
+      { name: "About Us", link: "/aboutUs", activeIndex: 3 },
+      { name: "Contact Us", link: "/contactUs", activeIndex: 4 },
+    ],
+    [anchorEl]
+  );
   React.useEffect(() => {
     [...menuOptions, ...routes].forEach((route) => {
       switch (window.location.pathname) {
         case `${route.link}`:
           if (value !== route.activeIndex) {
             setValue(route.activeIndex);
+
             if (route.selectedIndex && route.selectedIndex !== selectedIndex) {
               setSelectedIndex(route.selectedIndex);
             }
@@ -185,7 +194,7 @@ function Header(Props) {
           break;
       }
     });
-  }, [value, menuOptions, selectedIndex, routes]);
+  }, [setSelectedIndex, setValue, value, menuOptions, selectedIndex, routes]);
 
   const style = {
     backgroundColor: "orange", // Custom background color

@@ -1,4 +1,6 @@
 import { ThemeProvider } from "@mui/material";
+import { useState } from "react";
+
 import theam from "./ui/Theam";
 import Services from "../pages/Services";
 import AboutUs from "../pages/AboutUs";
@@ -7,15 +9,36 @@ import Estimate from "../pages/Estimate";
 import TheRevolution from "../pages/TheRevolution";
 import AppLayout from "./ui/AppLayout";
 import Footer from "./ui/Footer";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 const App = () => {
+  const [value, setValue] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   return (
     <div className="App">
       <ThemeProvider theme={theam}>
         <BrowserRouter>
           <Routes>
-            <Route element={<AppLayout />}>
-              <Route index element={<AppLayout />} />
+            <Route
+              element={
+                <AppLayout
+                  value={value}
+                  setValue={setValue}
+                  selectedIndex={selectedIndex}
+                  setSelectedIndex={setSelectedIndex}
+                />
+              }
+            >
+              <Route
+                index
+                element={
+                  <AppLayout
+                    value={value}
+                    setValue={setValue}
+                    selectedIndex={selectedIndex}
+                    setSelectedIndex={setSelectedIndex}
+                  />
+                }
+              />
               <Route path="services" element={<Services />} />
               <Route
                 path="/customSoftware"
@@ -29,7 +52,12 @@ const App = () => {
               <Route path="estimate" element={<Estimate />} />
             </Route>
           </Routes>
-          <Footer />
+          <Footer
+            value={value}
+            setValue={setValue}
+            selectedIndex={selectedIndex}
+            setSelectedIndex={setSelectedIndex}
+          />
         </BrowserRouter>
       </ThemeProvider>
     </div>
